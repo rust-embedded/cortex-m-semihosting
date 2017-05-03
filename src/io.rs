@@ -2,10 +2,11 @@
 
 use core::{fmt, slice};
 use core::fmt::Write;
+use core::ptr;
 
 /// File descriptors
-const STDOUT: usize = 1;
-const STDERR: usize = 2;
+static mut STDOUT: isize = -1;
+static mut STDERR: isize = -1;
 
 /// Host's standard error
 struct Stderr;
@@ -13,7 +14,45 @@ struct Stderr;
 /// Host's standard output
 struct Stdout;
 
-fn write_all(fd: usize, mut buffer: &[u8]) -> Result<(),()> {
+pub fn get_stdout() -> isize {
+    // Safe: 32-bit accesses are atomic on ARM
+    unsafe{ptr::read_volatile(&STDOUT)}
+}
+
+pub fn get_stderr() -> isize {
+    // Safe: 32-bit accesses are atomic on ARM
+    unsafe{ptr::read_volatile(&STDERR)}
+}
+
+/// Open stdout and stderr.
+pub fn open_streams() -> Result<(),()> {
+    // Special terminal path
+    let path = ":tt";
+
+    // To open stdin, use flag 0 instead of 4 or 8
+    let stdout_fd = unsafe { syscall!(OPEN, path.as_bytes().as_ptr(), 4, path.len()) } as isize;
+    let stderr_fd = unsafe { syscall!(OPEN, path.as_bytes().as_ptr(), 8, path.len()) } as isize;
+
+    // Safe: 32-bit accesses are atomic on ARM
+    unsafe {
+        ptr::write_volatile(&mut STDOUT, stdout_fd);
+        ptr::write_volatile(&mut STDERR, stderr_fd);
+    }
+
+    if stdout_fd < 0 || stderr_fd < 0 {
+        Err(())
+    } else {
+        Ok(())
+    }
+}
+
+/// Write the contents of `buffer` to `fd`. If `fd` is less than zero, do nothing and return
+/// `Err(())`.
+pub fn write_all(fd: isize, mut buffer: &[u8]) -> Result<(),()> {
+    if fd < 0 {
+        return Err(());
+    }
+
     while !buffer.is_empty() {
         match unsafe { syscall!(WRITE, fd, buffer.as_ptr(), buffer.len()) } {
             // Done
@@ -35,13 +74,13 @@ fn write_all(fd: usize, mut buffer: &[u8]) -> Result<(),()> {
 
 impl Stderr {
     fn write_all(&mut self, buffer: &[u8]) -> Result<(),()> {
-        write_all(STDERR, buffer)
+        write_all(get_stderr(), buffer)
     }
 }
 
 impl Stdout {
     fn write_all(&mut self, buffer: &[u8]) -> Result<(), ()> {
-        write_all(STDOUT, buffer)
+        write_all(get_stdout(), buffer)
     }
 }
 

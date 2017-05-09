@@ -27,7 +27,7 @@ pub fn get_stderr() -> isize {
 /// Open stdout and stderr.
 pub fn open_streams() -> Result<(),()> {
     // Special terminal path
-    let path = ":tt";
+    let path = ":tt\0";
 
     // To open stdin, use flag 0 instead of 4 or 8
     let stdout_fd = unsafe { syscall!(OPEN, path.as_bytes().as_ptr(), 4, path.len()) } as isize;

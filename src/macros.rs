@@ -31,8 +31,8 @@ macro_rules! syscall1 {
 /// Macro for printing to the **host's** standard stderr
 #[macro_export]
 macro_rules! ehprint {
-    ($s:expr) => ($crate::io::ewrite_str($s));
-    ($($arg:tt)*) => ($crate::io::ewrite_fmt(format_args!($($arg)*)));
+    ($s:expr) => ($crate::io::ewrite_str($s).ok());
+    ($($arg:tt)*) => ($crate::io::ewrite_fmt(format_args!($($arg)*)).ok());
 }
 
 /// Macro for printing to the **host's** standard error, with a newline.
@@ -46,8 +46,8 @@ macro_rules! ehprintln {
 /// Macro for printing to the **host's** standard output
 #[macro_export]
 macro_rules! hprint {
-    ($s:expr) => ($crate::io::write_str($s));
-    ($($arg:tt)*) => ($crate::io::write_fmt(format_args!($($arg)*)));
+    ($s:expr) => ($crate::io::write_str($s).ok());
+    ($($arg:tt)*) => ($crate::io::write_fmt(format_args!($($arg)*)).ok());
 }
 
 /// Macro for printing to the **host's** standard output, with a newline.

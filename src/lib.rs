@@ -33,12 +33,16 @@
 //! extern crate cortex_m_semihosting;
 //!
 //! fn main() {
-//!     // File descriptor (on the host)
-//!     const STDOUT: usize = 1;
+//!     // Open streams on host
+//!     cortex_m_semihosting::open_streams().unwrap();
+//!     let stdout = cortex_m_semihosting::get_stdout();
 //!     static MSG: &'static [u8] = b"Hello, world!\n";
 //!
+//!     cortex_m_semihosting::io::write_all(stdout, MSG);
+//!
+//!     // Alternatively...
 //!     // Signature: fn write(fd: usize, ptr: *const u8, len: usize) -> usize
-//!     let r = unsafe { syscall!(WRITE, STDOUT, MSG.as_ptr(), MSG.len()) };
+//!     // let r = unsafe { syscall!(WRITE, cortex_m_semihosting::get_stdout(), MSG.as_ptr(), MSG.len()) };
 //!
 //!     // (Or you could have just written `hprintln!("Hello, world!")`)
 //!     // ..
@@ -116,6 +120,8 @@ mod macros;
 pub mod io;
 pub mod nr;
 pub mod debug;
+
+pub use io::{get_stdout, get_stderr, open_streams};
 
 /// Performs a semihosting operation, takes a pointer to an argument block
 #[inline(always)]

@@ -5,6 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v0.2.1] - 2018-04-25
+
+### Added
+
+- An opt-out "inline-asm" Cargo feature. When this feature is disabled semihosting is implemented
+  using an external assembly file instead of using the unstable inline assembly (`asm!`) feature
+  meaning that this crate can be compiled on stable.
+
 ## [v0.2.0] - 2017-07-07
 
 ### Added

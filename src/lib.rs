@@ -2,22 +2,21 @@
 //!
 //! # What is semihosting?
 //!
-//! "Semihosting is a mechanism that enables code running on an ARM target to
-//!  communicate and use the Input/Output facilities on a host computer that is
-//!  running a debugger." - ARM
+//! "Semihosting is a mechanism that enables code running on an ARM target to communicate and use
+//! the Input/Output facilities on a host computer that is running a debugger." - ARM
 //!
 //! # Interface
 //!
-//! Since semihosting operations are modeled as [system calls][sc], this crate
-//! exposes an untyped `syscall!` interface just like the [`sc`] crate does.
+//! Since semihosting operations are modeled as [system calls][sc], this crate exposes an untyped
+//! `syscall!` interface just like the [`sc`] crate does.
 //!
 //! [sc]: https://en.wikipedia.org/wiki/System_call
 //! [`sc`]: https://crates.io/crates/sc
 //!
 //! # Forewarning
 //!
-//! Semihosting operations are *very* slow. Like, each WRITE operation can take
-//! hundreds of milliseconds.
+//! Semihosting operations are *very* slow. Like, each WRITE operation can take hundreds of
+//! milliseconds.
 //!
 //! # Example
 //!
@@ -50,8 +49,8 @@
 //! # the command will block at this point
 //! ```
 //!
-//! The OpenOCD logs will be redirected to `/tmp/openocd.log`. You can view
-//! those logs in "real time" using `tail`
+//! The OpenOCD logs will be redirected to `/tmp/openocd.log`. You can view those logs in "real
+//! time" using `tail`
 //!
 //! ``` text
 //! $ tail -f /tmp/openocd.log
@@ -63,9 +62,8 @@
 //! Info : nrf51.cpu: hardware has 4 breakpoints, 2 watchpoints
 //! ```
 //!
-//! Alternatively you could omit the `-l` flag from the `openocd` call, and the
-//! `tail -f` command but the OpenOCD output will have intermingled in it logs
-//! from its normal operation.
+//! Alternatively you could omit the `-l` flag from the `openocd` call, and the `tail -f` command
+//! but the OpenOCD output will have intermingled in it logs from its normal operation.
 //!
 //! Then, we run the program:
 //!
@@ -92,6 +90,22 @@
 //! Hello, world!
 //! ```
 //!
+//! # Cargo features
+//!
+//! ## `inline-asm`
+//!
+//! This feature is *enabled* by default.
+//!
+//! When this feature is enabled semihosting is implemented using inline assembly (`asm!`) and
+//! compiling this crate requires nightly.
+//!
+//! When this feature is disabled semihosting is implemented using FFI calls into an external
+//! assembly file and compiling this crate works on stable.
+//!
+//! Apart from the toolchain requirement, disabling `inline-asm` requires `arm-none-eabi-gcc` to be
+//! installed on the host. Also, disabling `inline-asm` imposes an overhead of an extra function
+//! call on each semihosting call compared to having `inline-asm` enabled.
+//!
 //! # Reference
 //!
 //! For documentation about the semihosting operations, check:
@@ -101,9 +115,9 @@
 //!
 //! [pdf]: http://infocenter.arm.com/help/topic/com.arm.doc.dui0471e/DUI0471E_developing_for_arm_processors.pdf
 
+#![cfg_attr(feature = "inline-asm", feature(asm))]
 #![deny(missing_docs)]
 #![deny(warnings)]
-#![feature(asm)]
 #![no_std]
 
 #[macro_use]
@@ -113,38 +127,30 @@ pub mod debug;
 pub mod hio;
 pub mod nr;
 
-/// Performs a semihosting operation, takes a pointer to an argument block
-#[inline(always)]
-#[cfg(target_arch = "arm")]
-pub unsafe fn syscall<T>(mut nr: usize, arg: &T) -> usize {
-    asm!("bkpt 0xAB"
-         : "+{r0}"(nr)
-         : "{r1}"(arg)
-         : "memory"
-         : "volatile");
-    nr
+#[cfg(all(thumb, not(feature = "inline-asm")))]
+extern "C" {
+    fn __syscall(nr: usize, arg: usize) -> usize;
 }
 
 /// Performs a semihosting operation, takes a pointer to an argument block
-#[cfg(not(target_arch = "arm"))]
-pub unsafe fn syscall<T>(_nr: usize, _arg: &T) -> usize {
-    0
+#[inline(always)]
+pub unsafe fn syscall<T>(nr: usize, arg: &T) -> usize {
+    syscall1(nr, arg as *const T as usize)
 }
 
 /// Performs a semihosting operation, takes one integer as an argument
 #[inline(always)]
-#[cfg(target_arch = "arm")]
-pub unsafe fn syscall1(mut nr: usize, arg: usize) -> usize {
-    asm!("bkpt 0xAB"
-         : "+{r0}"(nr)
-         : "{r1}"(arg)
-         : "memory"
-         : "volatile");
-    nr
-}
-
-/// Performs a semihosting operation, takes one integer as an argument
-#[cfg(not(target_arch = "arm"))]
 pub unsafe fn syscall1(_nr: usize, _arg: usize) -> usize {
-    0
+    match () {
+        #[cfg(all(thumb, not(feature = "inline-asm")))]
+        () => __syscall(_nr, _arg),
+        #[cfg(all(thumb, feature = "inline-asm"))]
+        () => {
+            let mut nr = _nr;
+            asm!("bkpt 0xAB" : "+{r0}"(nr) : "{r1}"(_arg) :: "volatile");
+            nr
+        }
+        #[cfg(not(thumb))]
+        () => unimplemented!(),
+    }
 }

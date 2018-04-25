@@ -1,14 +1,11 @@
 set -euxo pipefail
 
 main() {
-    local cargo=
-    if [ $TARGET = thumbv7m-none-eabi ]; then
-        cargo=xargo
-    else
-        cargo=cargo
-    fi
+    cargo check --target $TARGET --no-default-features
 
-    $cargo check --target $TARGET
+    if [ $TARGET != x86_64-unknown-linux-gnu ]; then
+        cargo check --target $TARGET
+    fi
 }
 
 main

@@ -1,11 +1,8 @@
 set -euxo pipefail
 
 main() {
-    if [ $TARGET = thumbv7m-none-eabi ]; then
-        cargo install --list | grep xargo || \
-            cargo install xargo
-        rustup component list | grep 'rust-src.*installed' || \
-            rustup component add rust-src
+    if [ $TARGET != x86_64-unknown-linux-gnu ]; then
+        rustup target add $TARGET
     fi
 }
 

@@ -2,10 +2,21 @@ language: rust
 
 matrix:
   include:
-    - env: TARGET=thumbv7m-none-eabi
-      rust: nightly
+    - env: TARGET=x86_64-unknown-linux-gnu
     - env: TARGET=x86_64-unknown-linux-gnu
       rust: nightly
+    - env: TARGET=thumbv6m-none-eabi
+      rust: nightly
+      addons:
+        apt:
+          packages:
+            - gcc-arm-none-eabi
+    - env: TARGET=thumbv7m-none-eabi
+      rust: nightly
+      addons:
+        apt:
+          packages:
+            - gcc-arm-none-eabi
 
 before_install: set -e
 
@@ -24,8 +35,8 @@ before_cache:
 
 branches:
   only:
-    - auto
-    - try
+    - staging
+    - trying
 
 notifications:
   email:

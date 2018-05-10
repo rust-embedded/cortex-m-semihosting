@@ -22,6 +22,7 @@ matrix:
       rust: nightly
 
     - env: TARGET=thumbv6m-none-eabi
+      rust: nightly
       addons:
         apt:
           packages:

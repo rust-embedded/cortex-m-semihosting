@@ -5,6 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v0.3.0] - 2018-05-10
+
+### Changed
+
+- [breaking-change] `inline-asm` is no longer a default feature (i.e. a feature that's enabled by
+  default). The consequence is that this crate now compiles on 1.27 (beta) by default, and opting
+  into `inline-asm` requires nightly.
+
 ## [v0.2.1] - 2018-04-25
 
 ### Added
@@ -64,7 +72,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Initial release
 
-[Unreleased]: https://github.com/japaric/cortex-m-semihosting/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/japaric/cortex-m-semihosting/compare/v0.3.0...HEAD
+[v0.3.0]: https://github.com/japaric/cortex-m-semihosting/compare/v0.2.1...v0.3.0
+[v0.2.1]: https://github.com/japaric/cortex-m-semihosting/compare/v0.2.0...v0.2.1
 [v0.2.0]: https://github.com/japaric/cortex-m-semihosting/compare/v0.1.3...v0.2.0
 [v0.1.3]: https://github.com/japaric/cortex-m-semihosting/compare/v0.1.2...v0.1.3
 [v0.1.2]: https://github.com/japaric/cortex-m-semihosting/compare/v0.1.1...v0.1.2

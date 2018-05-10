@@ -18,6 +18,11 @@
 //! Semihosting operations are *very* slow. Like, each WRITE operation can take hundreds of
 //! milliseconds.
 //!
+//! # Requirements
+//!
+//! Compiling this crate on stable or beta requires `arm-none-eabi-gcc` to be installed and
+//! available in `PATH`.
+//!
 //! # Example
 //!
 //! This example will show how to print "Hello, world!" on the host.
@@ -28,7 +33,8 @@
 //! #[macro_use]
 //! extern crate cortex_m_semihosting;
 //!
-//! fn main() {
+//! // This function will be called by the application
+//! fn print() {
 //!     // File descriptor (on the host)
 //!     const STDOUT: usize = 1; // NOTE the host stdout may not always be fd 1
 //!     static MSG: &'static [u8] = b"Hello, world!\n";
@@ -69,16 +75,16 @@
 //!
 //! ``` text
 //! $ arm-none-eabi-gdb hello-world
-//! # Connect to OpenOCD
+//! (gdb) # Connect to OpenOCD
 //! (gdb) target remote :3333
 //!
-//! # Enable OpenOCD's semihosting support
+//! (gdb) # Enable OpenOCD's semihosting support
 //! (gdb) monitor arm semihosting enable
 //!
-//! # Flash the program
+//! (gdb) # Flash the program
 //! (gdb) load
 //!
-//! # Run the program
+//! (gdb) # Run the program
 //! (gdb) continue
 //! ```
 //!
@@ -90,17 +96,15 @@
 //! Hello, world!
 //! ```
 //!
-//! # Cargo features
+//! # Optional features
 //!
 //! ## `inline-asm`
-//!
-//! This feature is *enabled* by default.
 //!
 //! When this feature is enabled semihosting is implemented using inline assembly (`asm!`) and
 //! compiling this crate requires nightly.
 //!
 //! When this feature is disabled semihosting is implemented using FFI calls into an external
-//! assembly file and compiling this crate works on stable.
+//! assembly file and compiling this crate works on stable and beta.
 //!
 //! Apart from the toolchain requirement, disabling `inline-asm` requires `arm-none-eabi-gcc` to be
 //! installed on the host. Also, disabling `inline-asm` imposes an overhead of an extra function
@@ -144,12 +148,14 @@ pub unsafe fn syscall1(_nr: usize, _arg: usize) -> usize {
     match () {
         #[cfg(all(thumb, not(feature = "inline-asm")))]
         () => __syscall(_nr, _arg),
+
         #[cfg(all(thumb, feature = "inline-asm"))]
         () => {
             let mut nr = _nr;
             asm!("bkpt 0xAB" : "+{r0}"(nr) : "{r1}"(_arg) :: "volatile");
             nr
         }
+
         #[cfg(not(thumb))]
         () => unimplemented!(),
     }

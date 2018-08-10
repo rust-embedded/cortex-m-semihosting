@@ -7,6 +7,11 @@
 //!
 //! # Interface
 //!
+//! This crate provides implementations of
+//! [`core::fmt::Write`](https://doc.rust-lang.org/core/fmt/trait.Write.html), so you can use it,
+//! in conjunction with
+//! [`core::format_args!`](https://doc.rust-lang.org/core/macro.format_args.html) or the [`write!` macro](https://doc.rust-lang.org/core/macro.write.html), for user-friendly construction and printing of formatted strings.
+//!
 //! Since semihosting operations are modeled as [system calls][sc], this crate exposes an untyped
 //! `syscall!` interface just like the [`sc`] crate does.
 //!
@@ -25,22 +30,29 @@
 //!
 //! # Example
 //!
-//! This example will show how to print "Hello, world!" on the host.
+//! ## Using `hio::HStdout`
 //!
-//! Target program:
+//! This example will demonstrate how to print formatted strings.
 //!
-//! ```
-//! #[macro_use]
+//! ```rust
 //! extern crate cortex_m_semihosting;
 //!
-//! // This function will be called by the application
-//! fn print() {
-//!     // File descriptor (on the host)
-//!     const STDOUT: usize = 1; // NOTE the host stdout may not always be fd 1
-//!     static MSG: &'static [u8] = b"Hello, world!\n";
+//! use cortex_m_semihosting::hio;
+//! use core::fmt::Write;
 //!
-//!     // Signature: fn write(fd: usize, ptr: *const u8, len: usize) -> usize
-//!     let r = unsafe { syscall!(WRITE, STDOUT, MSG.as_ptr(), MSG.len()) };
+//! // This function will be called by the application
+//! fn print() -> Result<(), core::fmt::Error> {
+//!     let mut stdout = match hio::hstdout() {
+//!         Ok(fd) => fd,
+//!         Err(()) => return Err(core::fmt::Error),
+//!     };
+//!
+//!     let language = "Rust";
+//!     let ranking = 1;
+//!
+//!     write!(stdout, "{} on embedded is #{}!", language, ranking)?;
+//!
+//!     Ok(())
 //! }
 //! ```
 //!
@@ -93,8 +105,28 @@
 //! ``` text
 //! # openocd -f $INTERFACE -f $TARGET -l /tmp/openocd.log
 //! (..)
-//! Hello, world!
+//! Rust on embedded is #1!
 //! ```
+//! ## Using the syscall interface
+//!
+//! This example will show how to print "Hello, world!" on the host.
+//!
+//! Target program:
+//!
+//! ```
+//! extern crate cortex_m_semihosting;
+//!
+//! // This function will be called by the application
+//! fn print() {
+//!     // File descriptor (on the host)
+//!     const STDOUT: usize = 1; // NOTE the host stdout may not always be fd 1
+//!     static MSG: &'static [u8] = b"Hello, world!\n";
+//!
+//!     // Signature: fn write(fd: usize, ptr: *const u8, len: usize) -> usize
+//!     let r = unsafe { syscall!(WRITE, STDOUT, MSG.as_ptr(), MSG.len()) };
+//! }
+//! ```
+//! Output and monitoring proceed as in the above example.
 //!
 //! # Optional features
 //!

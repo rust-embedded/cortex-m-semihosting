@@ -10,8 +10,7 @@
 //! This crate provides implementations of
 //! [`core::fmt::Write`](https://doc.rust-lang.org/core/fmt/trait.Write.html), so you can use it,
 //! in conjunction with
-//! [`core::format_args!`](https://doc.rust-lang.org/core/macro.format_args.html), for user-friendly
-//! construction and printing of formatted strings.
+//! [`core::format_args!`](https://doc.rust-lang.org/core/macro.format_args.html) or the [`write!` macro](https://doc.rust-lang.org/core/macro.write.html), for user-friendly construction and printing of formatted strings.
 //!
 //! Since semihosting operations are modeled as [system calls][sc], this crate exposes an untyped
 //! `syscall!` interface just like the [`sc`] crate does.

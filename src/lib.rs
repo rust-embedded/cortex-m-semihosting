@@ -36,7 +36,6 @@
 //! This example will demonstrate how to print formatted strings.
 //!
 //! ```rust
-//! #[macro_use]
 //! extern crate cortex_m_semihosting;
 //!
 //! use cortex_m_semihosting::hio;
@@ -52,7 +51,7 @@
 //!     let language = "Rust";
 //!     let ranking = 1;
 //!
-//!     stdout.write_fmt(format_args!("{} on embedded is #{}!", language, ranking))?;
+//!     write!(stdout, "{} on embedded is #{}!", language, ranking)?;
 //!
 //!     Ok(())
 //! }
@@ -116,7 +115,6 @@
 //! Target program:
 //!
 //! ```
-//! #[macro_use]
 //! extern crate cortex_m_semihosting;
 //!
 //! // This function will be called by the application

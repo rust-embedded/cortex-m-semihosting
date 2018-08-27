@@ -23,11 +23,6 @@
 //! Semihosting operations are *very* slow. Like, each WRITE operation can take hundreds of
 //! milliseconds.
 //!
-//! # Requirements
-//!
-//! Compiling this crate on stable or beta requires `arm-none-eabi-gcc` to be installed and
-//! available in `PATH`.
-//!
 //! # Example
 //!
 //! ## Using `hio::HStdout`
@@ -137,9 +132,6 @@
 //!
 //! When this feature is disabled semihosting is implemented using FFI calls into an external
 //! assembly file and compiling this crate works on stable and beta.
-//!
-//! Apart from the toolchain requirement, enabling `inline-asm` removes the requirement of having
-//! `arm-none-eabi-gcc` installed on the host.
 //!
 //! # Reference
 //!

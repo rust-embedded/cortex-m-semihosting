@@ -8,8 +8,5 @@ name = "cortex-m-semihosting"
 repository = "https://github.com/japaric/cortex-m-semihosting"
 version = "0.3.0"
 
-[build-dependencies]
-cc = "1.0.10"
-
 [features]
 inline-asm = []

@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v0.3.2] - 2018-11-04
+
+### Added
+
+- Added a family of `hprint` macros for printing to the host standard output /
+  error via globally shared `HStdout` / `HStderr` handles .
+
 ## [v0.3.1] - 2018-08-27
 
 ### Changed

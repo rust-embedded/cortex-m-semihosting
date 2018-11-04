@@ -147,10 +147,14 @@
 #![deny(warnings)]
 #![no_std]
 
+extern crate cortex_m;
+
 #[macro_use]
 mod macros;
 
 pub mod debug;
+#[doc(hidden)]
+pub mod export;
 pub mod hio;
 pub mod nr;
 

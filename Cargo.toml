@@ -7,7 +7,10 @@ license = "MIT OR Apache-2.0"
 name = "cortex-m-semihosting"
 readme = "README.md"
 repository = "https://github.com/japaric/cortex-m-semihosting"
-version = "0.3.1"
+version = "0.3.2"
 
 [features]
 inline-asm = []
+
+[dependencies]
+cortex-m = "0.5.8"

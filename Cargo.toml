@@ -13,4 +13,4 @@ version = "0.3.2"
 inline-asm = []
 
 [dependencies]
-cortex-m = "0.5.8"
+cortex-m = ">= 0.5.8, < 0.7"

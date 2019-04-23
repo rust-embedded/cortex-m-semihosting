@@ -68,12 +68,14 @@ fn write_all(fd: usize, mut buffer: &[u8]) -> Result<(), ()> {
             // Done
             0 => return Ok(()),
             // `n` bytes were not written
-            n if n <= buffer.len() => {
+            n if n <= buffer.len() && n > 0 => {
                 let offset = (buffer.len() - n) as isize;
                 buffer = unsafe {
                     slice::from_raw_parts(buffer.as_ptr().offset(offset), n)
                 }
             }
+            // Error (-1) - should be an error but JLink can return -1
+            0xffffffff => return Ok(()),
             // Error
             _ => return Err(()),
         }

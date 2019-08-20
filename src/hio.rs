@@ -74,6 +74,10 @@ fn write_all(fd: usize, mut buffer: &[u8]) -> Result<(), ()> {
                     slice::from_raw_parts(buffer.as_ptr().offset(offset), n)
                 }
             }
+            #[cfg(feature = "jlink-quirks")]
+            // Error (-1) - should be an error but JLink can return -1, -2, -3,...
+            // For good measure, we allow up to negative 15.
+            n if n > 0xfffffff0 => return Ok(()),
             // Error
             _ => return Err(()),
         }

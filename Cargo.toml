@@ -14,6 +14,7 @@ version = "0.3.4"
 
 [features]
 inline-asm = []
+jlink-quirks = []
 
 [dependencies]
 cortex-m = ">= 0.5.8, < 0.7"

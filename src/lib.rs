@@ -133,6 +133,13 @@
 //! When this feature is disabled semihosting is implemented using FFI calls into an external
 //! assembly file and compiling this crate works on stable and beta.
 //!
+//! ## `jlink-quirks`
+//!
+//! When this feature is enabled, return values above `0xfffffff0` from semihosting operation
+//! `SYS_WRITE` (0x05) are interpreted as if the entire buffer had been written. The current
+//! latest version 6.48b of J-Link exhibits such behaviour, causing a panic if this feature
+//! is not enabled.
+//!
 //! # Reference
 //!
 //! For documentation about the semihosting operations, check:

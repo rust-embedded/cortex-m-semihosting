@@ -4,6 +4,7 @@ use core::{fmt, slice};
 use nr;
 
 /// Host's standard error
+#[derive(Clone, Copy)]
 pub struct HStderr {
     fd: usize,
 }
@@ -22,6 +23,7 @@ impl fmt::Write for HStderr {
 }
 
 /// Host's standard output
+#[derive(Clone, Copy)]
 pub struct HStdout {
     fd: usize,
 }

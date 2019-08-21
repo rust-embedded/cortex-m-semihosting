@@ -25,7 +25,7 @@
 //!
 //! # Example
 //!
-//! ## Using `hio::HStdout`
+//! ## Using `hio::hstdout`
 //!
 //! This example will demonstrate how to print formatted strings.
 //!

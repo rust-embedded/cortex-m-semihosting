@@ -1,7 +1,7 @@
 //! Host I/O
 
 use core::{fmt, slice};
-use nr;
+use crate::nr;
 
 /// Host's standard error
 pub struct HStderr {

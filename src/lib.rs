@@ -123,6 +123,36 @@
 //! ```
 //! Output and monitoring proceed as in the above example.
 //!
+//! ## The `dbg!` macro
+//!
+//! Analogous to [`std::dbg`](https://doc.rust-lang.org/std/macro.dbg.html) the macro
+//! `dbg!` returns a given expression and prints it using `heprintln!` including context
+//! for quick and dirty debugging.
+//!
+//! Example:
+//!
+//! ```
+//! const UUID: *mut u32 = 0x0009_FC70 as *mut u32;
+//! dbg!(UUID);
+//! let mut uuid: [u32; 4] = [0; 4];
+//! for i in 0..4 {
+//!     dbg!(i);
+//!     uuid[i] = unsafe { dbg!(UUID.offset(i as isize).read_volatile()) };    }
+//! }
+//! ```
+//! outputs
+//! ```
+//! [examples/semihosting.rs:37] UUID = 0x0009fc70
+//! [examples/semihosting.rs:40] i = 0
+//! [examples/semihosting.rs:41] UUID.offset(i as isize).read_volatile() = 3370045464
+//! [examples/semihosting.rs:40] i = 1
+//! [examples/semihosting.rs:41] UUID.offset(i as isize).read_volatile() = 1426218275
+//! [examples/semihosting.rs:40] i = 2
+//! [examples/semihosting.rs:41] UUID.offset(i as isize).read_volatile() = 2422621116
+//! [examples/semihosting.rs:40] i = 3
+//! [examples/semihosting.rs:41] UUID.offset(i as isize).read_volatile() = 1044138593
+//! ```
+//!
 //! # Optional features
 //!
 //! ## `inline-asm`

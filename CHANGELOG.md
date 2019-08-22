@@ -5,6 +5,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+- Adds a feature to work around JLink quirks
+- Adds a dbg! macro using heprintln
+
 ## [v0.3.4] - 2019-04-22
 
 ### Fixed

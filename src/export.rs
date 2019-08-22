@@ -4,7 +4,7 @@ use core::fmt::{self, Write};
 
 use cortex_m::interrupt;
 
-use hio::{self, HStderr, HStdout};
+use crate::hio::{self, HStderr, HStdout};
 
 static mut HSTDOUT: Option<HStdout> = None;
 

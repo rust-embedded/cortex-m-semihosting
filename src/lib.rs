@@ -129,6 +129,8 @@
 //! `dbg!` returns a given expression and prints it using `heprintln!` including context
 //! for quick and dirty debugging.
 //!
+//! Panics if `heprintln!` returns an error.
+//!
 //! Example:
 //!
 //! ```

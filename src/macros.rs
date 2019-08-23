@@ -88,19 +88,20 @@ macro_rules! heprintln {
 
 /// Macro that prints and returns the value of a given expression
 /// for quick and dirty debugging. Works exactly like `dbg!` in
-/// the standard library, replacing `eprintln` with `heprintln`.
+/// the standard library, replacing `eprintln` with `heprintln`,
+/// which it unwraps.
 #[macro_export]
 macro_rules! dbg {
     () => {
-        $crate::hprintln!("[{}:{}]", file!(), line!());
+        $crate::heprintln!("[{}:{}]", file!(), line!()).unwrap();
     };
     ($val:expr) => {
         // Use of `match` here is intentional because it affects the lifetimes
         // of temporaries - https://stackoverflow.com/a/48732525/1063961
         match $val {
             tmp => {
-                $crate::hprintln!("[{}:{}] {} = {:#?}",
-                    file!(), line!(), stringify!($val), &tmp);
+                $crate::heprintln!("[{}:{}] {} = {:#?}",
+                    file!(), line!(), stringify!($val), &tmp).unwrap();
                 tmp
             }
         }

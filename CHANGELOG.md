@@ -5,11 +5,19 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v0.3.5] - 2019-08-29
+
+### Added
+
 - Adds a feature to work around JLink quirks
 - Adds a dbg! macro using heprintln
+- Added thumbv8m.main support on stable
+
+### Fixed
+
 - Now Rust 2018 edition
 
-## [v0.3.4] - 2019-04-22
+## [v0.3.4] - 2019-08-13
 
 ### Fixed
 
@@ -101,7 +109,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Initial release
 
-[Unreleased]: https://github.com/rust-embedded/cortex-m-semihosting/compare/v0.3.4...HEAD
+[Unreleased]: https://github.com/rust-embedded/cortex-m-semihosting/compare/v0.3.5...HEAD
+[v0.3.5]: https://github.com/rust-embedded/cortex-m-semihosting/compare/v0.3.4...v0.3.5
 [v0.3.4]: https://github.com/rust-embedded/cortex-m-semihosting/compare/v0.3.3...v0.3.4
 [v0.3.3]: https://github.com/rust-embedded/cortex-m-semihosting/compare/v0.3.2...v0.3.3
 [v0.3.2]: https://github.com/rust-embedded/cortex-m-semihosting/compare/v0.3.1...v0.3.2

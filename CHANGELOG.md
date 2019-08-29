@@ -7,9 +7,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [v0.3.5] - 2019-08-29
 
+### Added
+
 - Adds a feature to work around JLink quirks
 - Adds a dbg! macro using heprintln
 - Added thumbv8m.main support on stable
+
+### Fixed
+
 - Now Rust 2018 edition
 
 ## [v0.3.4] - 2019-08-13

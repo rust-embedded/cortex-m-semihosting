@@ -8,9 +8,7 @@
 //!
 //! Target program:
 //!
-//! ```
-//! #[macro_use]
-//! extern crate cortex_m_semihosting;
+//! ```no_run
 //! use cortex_m_semihosting::debug::{self, EXIT_SUCCESS, EXIT_FAILURE};
 //!
 //! fn main() {

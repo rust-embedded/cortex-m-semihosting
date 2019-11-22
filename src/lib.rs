@@ -29,9 +29,7 @@
 //!
 //! This example will demonstrate how to print formatted strings.
 //!
-//! ```rust
-//! extern crate cortex_m_semihosting;
-//!
+//! ```no_run
 //! use cortex_m_semihosting::hio;
 //! use core::fmt::Write;
 //!
@@ -108,8 +106,8 @@
 //!
 //! Target program:
 //!
-//! ```
-//! extern crate cortex_m_semihosting;
+//! ```no_run
+//! use cortex_m_semihosting::syscall;
 //!
 //! // This function will be called by the application
 //! fn print() {
@@ -133,17 +131,17 @@
 //!
 //! Example:
 //!
-//! ```
+//! ```no_run
 //! const UUID: *mut u32 = 0x0009_FC70 as *mut u32;
 //! dbg!(UUID);
 //! let mut uuid: [u32; 4] = [0; 4];
 //! for i in 0..4 {
 //!     dbg!(i);
-//!     uuid[i] = unsafe { dbg!(UUID.offset(i as isize).read_volatile()) };    }
+//!     uuid[i] = unsafe { dbg!(UUID.offset(i as isize).read_volatile()) };
 //! }
 //! ```
 //! outputs
-//! ```
+//! ```text
 //! [examples/semihosting.rs:37] UUID = 0x0009fc70
 //! [examples/semihosting.rs:40] i = 0
 //! [examples/semihosting.rs:41] UUID.offset(i as isize).read_volatile() = 3370045464
@@ -185,8 +183,6 @@
 #![deny(missing_docs)]
 #![deny(warnings)]
 #![no_std]
-
-extern crate cortex_m;
 
 #[macro_use]
 mod macros;

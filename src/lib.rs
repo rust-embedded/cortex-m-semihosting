@@ -157,7 +157,7 @@
 //!
 //! ## `inline-asm`
 //!
-//! When this feature is enabled semihosting is implemented using inline assembly (`asm!`) and
+//! When this feature is enabled semihosting is implemented using inline assembly (`llvm_asm!`) and
 //! compiling this crate requires nightly.
 //!
 //! When this feature is disabled semihosting is implemented using FFI calls into an external
@@ -179,7 +179,7 @@
 //!
 //! [pdf]: http://infocenter.arm.com/help/topic/com.arm.doc.dui0471e/DUI0471E_developing_for_arm_processors.pdf
 
-#![cfg_attr(feature = "inline-asm", feature(asm))]
+#![cfg_attr(feature = "inline-asm", feature(llvm_asm))]
 #![deny(missing_docs)]
 #![deny(warnings)]
 #![no_std]
@@ -214,7 +214,7 @@ pub unsafe fn syscall1(_nr: usize, _arg: usize) -> usize {
         #[cfg(all(thumb, feature = "inline-asm"))]
         () => {
             let mut nr = _nr;
-            asm!("bkpt 0xAB" : "+{r0}"(nr) : "{r1}"(_arg) :: "volatile");
+            llvm_asm!("bkpt 0xAB" : "+{r0}"(nr) : "{r1}"(_arg) :: "volatile");
             nr
         }
 

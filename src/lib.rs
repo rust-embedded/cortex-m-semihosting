@@ -170,6 +170,10 @@
 //! latest version 6.48b of J-Link exhibits such behaviour, causing a panic if this feature
 //! is not enabled.
 //!
+//! ## `no-semihosting`
+//!
+//! When this feature is enabled, the underlying system calls to `bkpt` are patched out.
+//!
 //! # Reference
 //!
 //! For documentation about the semihosting operations, check:
@@ -207,14 +211,19 @@ pub unsafe fn syscall<T>(nr: usize, arg: &T) -> usize {
 #[inline(always)]
 pub unsafe fn syscall1(_nr: usize, _arg: usize) -> usize {
     match () {
-        #[cfg(all(thumb, not(feature = "inline-asm")))]
+        #[cfg(all(thumb, not(feature = "inline-asm"), not(feature = "no-semihosting")))]
         () => __syscall(_nr, _arg),
 
-        #[cfg(all(thumb, feature = "inline-asm"))]
+        #[cfg(all(thumb, feature = "inline-asm", not(feature = "no-semihosting")))]
         () => {
             let mut nr = _nr;
             llvm_asm!("bkpt 0xAB" : "+{r0}"(nr) : "{r1}"(_arg) :: "volatile");
             nr
+        }
+
+        #[cfg(all(thumb, feature = "no-semihosting"))]
+        () => {
+            0
         }
 
         #[cfg(not(thumb))]

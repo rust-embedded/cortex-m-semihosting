@@ -16,6 +16,7 @@ edition = "2018"
 [features]
 inline-asm = []
 jlink-quirks = []
+no-semihosting = []
 
 [dependencies]
 cortex-m = ">= 0.5.8, < 0.7"

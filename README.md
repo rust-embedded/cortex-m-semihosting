@@ -5,6 +5,11 @@
 
 > Semihosting for ARM Cortex-M processors
 
+**This crate has moved to the [cortex-m] repository. Please direct
+issues and pull requests to the new repository.**
+
+[cortex-m]: https://github.com/rust-embedded/cortex-m
+
 This project is developed and maintained by the [Cortex-M team][team].
 
 ## [Documentation](https://docs.rs/cortex-m-semihosting)

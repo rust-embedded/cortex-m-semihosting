@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v0.3.6] - 2020-12-01
+
+### Added
+
+- Update cortex-m dependency to support version 0.7.
+- Add `no-semihosting` feature to disable all semihosting calls.
+
 ## [v0.3.5] - 2019-08-29
 
 ### Added
@@ -109,7 +116,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Initial release
 
-[Unreleased]: https://github.com/rust-embedded/cortex-m-semihosting/compare/v0.3.5...HEAD
+[Unreleased]: https://github.com/rust-embedded/cortex-m-semihosting/compare/v0.3.6...HEAD
+[v0.3.6]: https://github.com/rust-embedded/cortex-m-semihosting/compare/v0.3.5...v0.3.6
 [v0.3.5]: https://github.com/rust-embedded/cortex-m-semihosting/compare/v0.3.4...v0.3.5
 [v0.3.4]: https://github.com/rust-embedded/cortex-m-semihosting/compare/v0.3.3...v0.3.4
 [v0.3.3]: https://github.com/rust-embedded/cortex-m-semihosting/compare/v0.3.2...v0.3.3

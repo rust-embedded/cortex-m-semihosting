@@ -20,7 +20,7 @@ macro_rules! syscall {
     };
 }
 
-/// Macro version of `syscall1`.
+/// Macro version of `syscall1`
 #[macro_export]
 macro_rules! syscall1 {
     ($nr:ident, $a1:expr) => {
@@ -28,10 +28,9 @@ macro_rules! syscall1 {
     };
 }
 
-/// Macro for printing to the HOST standard output.
+/// Macro for printing to the HOST standard output
 ///
-/// This is similar to the `print!` macro in the standard library. Both will panic on any failure to
-/// print.
+/// This macro returns a `Result<(), ()>` value
 #[macro_export]
 macro_rules! hprint {
     ($s:expr) => {
@@ -44,8 +43,7 @@ macro_rules! hprint {
 
 /// Macro for printing to the HOST standard output, with a newline.
 ///
-/// This is similar to the `println!` macro in the standard library. Both will panic on any failure to
-/// print.
+/// This macro returns a `Result<(), ()>` value
 #[macro_export]
 macro_rules! hprintln {
     () => {
@@ -59,10 +57,9 @@ macro_rules! hprintln {
     };
 }
 
-/// Macro for printing to the HOST standard error.
+/// Macro for printing to the HOST standard error
 ///
-/// This is similar to the `eprint!` macro in the standard library. Both will panic on any failure
-/// to print.
+/// This macro returns a `Result<(), ()>` value
 #[macro_export]
 macro_rules! heprint {
     ($s:expr) => {
@@ -75,8 +72,7 @@ macro_rules! heprint {
 
 /// Macro for printing to the HOST standard error, with a newline.
 ///
-/// This is similar to the `eprintln!` macro in the standard library. Both will panic on any failure
-/// to print.
+/// This macro returns a `Result<(), ()>` value
 #[macro_export]
 macro_rules! heprintln {
     () => {
@@ -90,15 +86,14 @@ macro_rules! heprintln {
     };
 }
 
-/// Macro that prints and returns the value of a given expression for quick and
-/// dirty debugging.
-///
-/// Works exactly like `dbg!` in the standard library, replacing `eprintln!`
-/// with `heprintln!`.
+/// Macro that prints and returns the value of a given expression
+/// for quick and dirty debugging. Works exactly like `dbg!` in
+/// the standard library, replacing `eprintln` with `heprintln`,
+/// which it unwraps.
 #[macro_export]
 macro_rules! dbg {
     () => {
-        $crate::heprintln!("[{}:{}]", file!(), line!());
+        $crate::heprintln!("[{}:{}]", file!(), line!()).unwrap();
     };
     ($val:expr) => {
         // Use of `match` here is intentional because it affects the lifetimes
@@ -106,7 +101,7 @@ macro_rules! dbg {
         match $val {
             tmp => {
                 $crate::heprintln!("[{}:{}] {} = {:#?}",
-                    file!(), line!(), stringify!($val), &tmp);
+                    file!(), line!(), stringify!($val), &tmp).unwrap();
                 tmp
             }
         }

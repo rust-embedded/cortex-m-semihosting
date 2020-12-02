@@ -1,6 +1,6 @@
-  .section .text.__syscall
-  .global __syscall
+  .section .text.__c_m_sh_syscall
+  .global __c_m_sh_syscall
   .thumb_func
-__syscall:
+__c_m_sh_syscall:
   bkpt 0xAB
   bx lr

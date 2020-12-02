@@ -198,7 +198,7 @@ pub mod nr;
 
 #[cfg(all(thumb, not(feature = "inline-asm")))]
 extern "C" {
-    fn __syscall(nr: usize, arg: usize) -> usize;
+    fn __c_m_sh_syscall(nr: usize, arg: usize) -> usize;
 }
 
 /// Performs a semihosting operation, takes a pointer to an argument block
@@ -212,7 +212,7 @@ pub unsafe fn syscall<T>(nr: usize, arg: &T) -> usize {
 pub unsafe fn syscall1(_nr: usize, _arg: usize) -> usize {
     match () {
         #[cfg(all(thumb, not(feature = "inline-asm"), not(feature = "no-semihosting")))]
-        () => __syscall(_nr, _arg),
+        () => __c_m_sh_syscall(_nr, _arg),
 
         #[cfg(all(thumb, feature = "inline-asm", not(feature = "no-semihosting")))]
         () => {

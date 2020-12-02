@@ -5,7 +5,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v0.3.7] - 2020-12-02
+
+- Replaces the yanked v0.3.6 by reverting #48, so the semihosting macros
+  continue to return a Result.
+
 ## [v0.3.6] - 2020-12-01
+
+v0.3.6 was yanked because it incorrectly included #48, which was a breaking
+change.
 
 ### Added
 
@@ -116,7 +124,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Initial release
 
-[Unreleased]: https://github.com/rust-embedded/cortex-m-semihosting/compare/v0.3.6...HEAD
+[Unreleased]: https://github.com/rust-embedded/cortex-m-semihosting/compare/v0.3.7...HEAD
+[v0.3.7]: https://github.com/rust-embedded/cortex-m-semihosting/compare/v0.3.6...v0.3.7
 [v0.3.6]: https://github.com/rust-embedded/cortex-m-semihosting/compare/v0.3.5...v0.3.6
 [v0.3.5]: https://github.com/rust-embedded/cortex-m-semihosting/compare/v0.3.4...v0.3.5
 [v0.3.4]: https://github.com/rust-embedded/cortex-m-semihosting/compare/v0.3.3...v0.3.4
